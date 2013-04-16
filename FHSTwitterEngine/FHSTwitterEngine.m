@@ -2086,6 +2086,13 @@ static NSString * const oldPinJS = @"var d = document.getElementById('oauth-pin'
     if (authPin.length) {
         [self gotPin:authPin];
         return;
+    } else {
+        // JDM: Didn't get a pin so return false.
+        void(^block)(BOOL success) = objc_getAssociatedObject(self.engine, "FHSTwitterEngineOAuthCompletion");
+
+        if (block) {
+            block(false);
+        }
     }
     
     NSString *formCount = [webView stringByEvaluatingJavaScriptFromString:@"document.forms.length"];
